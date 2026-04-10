@@ -1,21 +1,22 @@
-# Linux Interview Prep — 50 Real Interview Questions
-### DevOps Engineer | Basic → Mid-level → Hard/Scenario
+# Basic
 
----
+### DevOps Engineer | Basic
+
+***
 
 ## 📋 Index
 
-| Level | Questions | Topics |
-|-------|-----------|--------|
-| Basic | Q1–Q15 | File system, permissions, processes, SSH, cron, text processing |
-| Mid-level | Q16–Q35 | Performance, networking, scripting, kernel, security, storage |
-| Hard / Scenario | Q36–Q50 | Troubleshooting scenarios, forensics, kernel internals, advanced scripting |
+| Level           | Questions | Topics                                                                     |
+| --------------- | --------- | -------------------------------------------------------------------------- |
+| Basic           | Q1–Q15    | File system, permissions, processes, SSH, cron, text processing            |
+| Mid-level       | Q16–Q35   | Performance, networking, scripting, kernel, security, storage              |
+| Hard / Scenario | Q36–Q50   | Troubleshooting scenarios, forensics, kernel internals, advanced scripting |
 
----
+***
 
 ## 🟢 BASIC (Q1–Q15)
 
----
+***
 
 ### Q1. What is the Linux directory structure? Explain key directories.
 
@@ -35,7 +36,7 @@
 
 **DevOps relevance:** app configs in `/etc`, logs in `/var/log`, container runtimes use `/proc` for cgroup/namespace info.
 
----
+***
 
 ### Q2. Explain Linux file permissions — what does `-rwxr-xr--` mean?
 
@@ -51,9 +52,10 @@ r--  = others: read only = 4
 **Numeric:** `chmod 754 file`
 
 **Special bits:**
-- `setuid (4xxx)` — run as file owner (e.g. passwd command)
-- `setgid (2xxx)` — run as group / new files inherit group
-- `sticky bit (1xxx)` — only owner can delete (e.g. /tmp is 1777)
+
+* `setuid (4xxx)` — run as file owner (e.g. passwd command)
+* `setgid (2xxx)` — run as group / new files inherit group
+* `sticky bit (1xxx)` — only owner can delete (e.g. /tmp is 1777)
 
 ```bash
 chmod 755 script.sh
@@ -61,7 +63,7 @@ chown user:group file
 umask 022    # default permissions = 755 for dirs, 644 for files
 ```
 
----
+***
 
 ### Q3. What is the difference between a process and a thread?
 
@@ -76,7 +78,7 @@ cat /proc/<PID>/status | grep Threads    # thread count for a process
 
 **Real relevance:** Java app servers (Tomcat) are multi-threaded in one process. Node.js is single-threaded. Docker runs each container as a separate process (namespace-isolated).
 
----
+***
 
 ### Q4. How do you find and kill a process using a specific port?
 
@@ -95,12 +97,13 @@ lsof -ti :8080 | xargs kill -9
 ```
 
 **Signals:**
-- `SIGTERM (15)` — asks process to terminate, can be caught
-- `SIGKILL (9)` — kernel kills it, cannot be caught or ignored
-- `SIGHUP (1)` — reload config (nginx -s reload uses this)
-- `SIGINT (2)` — Ctrl+C
 
----
+* `SIGTERM (15)` — asks process to terminate, can be caught
+* `SIGKILL (9)` — kernel kills it, cannot be caught or ignored
+* `SIGHUP (1)` — reload config (nginx -s reload uses this)
+* `SIGINT (2)` — Ctrl+C
+
+***
 
 ### Q5. What is the difference between soft links and hard links?
 
@@ -117,7 +120,7 @@ ls -li    # shows inode numbers — hard links share the same inode
 
 **Real use:** `/usr/bin/python3 → python3.11` (symlink for version management). nginx `sites-enabled` contains symlinks to `sites-available`.
 
----
+***
 
 ### Q6. How do you search for a pattern in files? Explain grep options you use daily.
 
@@ -135,7 +138,7 @@ grep -c "error" file           # count matches only
 cat /var/log/app.log | grep "ERROR" | awk '{print $1,$2}' | sort | uniq -c
 ```
 
----
+***
 
 ### Q7. Explain awk and sed — when do you use each?
 
@@ -160,7 +163,7 @@ sed 's/password=.*/password=REDACTED/g' config.env  # mask secrets
 
 **Real use:** `sed` to patch config files in CI pipelines without a full template engine.
 
----
+***
 
 ### Q8. How do you check disk usage and identify what's filling up a filesystem?
 
@@ -178,7 +181,7 @@ lsof +D /path
 
 **Real scenario:** disk full on `/var/log` because a log file grew unchecked. `lsof` shows a deleted file still consuming space because a process has it open — restart the process or truncate: `> /var/log/app.log`
 
----
+***
 
 ### Q9. What does netstat/ss show and how do you use it in troubleshooting?
 
@@ -196,11 +199,12 @@ ip addr show       # interface IPs (replaces ifconfig)
 ```
 
 **Common checks:**
-- Is my app listening? → `ss -tulnp | grep 8080`
-- Who's connected? → `ss -tnp state ESTABLISHED`
-- Connection leak? → `ss -s` (check TIME_WAIT count)
 
----
+* Is my app listening? → `ss -tulnp | grep 8080`
+* Who's connected? → `ss -tnp state ESTABLISHED`
+* Connection leak? → `ss -s` (check TIME\_WAIT count)
+
+***
 
 ### Q10. How do you manage services with systemd? Common systemctl commands.
 
@@ -225,7 +229,7 @@ systemctl --failed
 journalctl -p err -b          # errors since last boot
 ```
 
----
+***
 
 ### Q11. How do you manage users and groups in Linux?
 
@@ -247,11 +251,12 @@ username ALL=(ALL:ALL) NOPASSWD: /usr/bin/systemctl
 
 **Real use:** service accounts for CI/CD agents — no shell (`useradd -s /sbin/nologin`), no interactive login, minimal group membership.
 
----
+***
 
 ### Q12. How does SSH key-based authentication work? How do you set it up?
 
 **Flow:**
+
 1. Client has private key; server has public key in `~/.ssh/authorized_keys`
 2. Server sends a challenge encrypted with the public key
 3. Only the holder of the private key can decrypt and respond
@@ -263,7 +268,7 @@ ssh-copy-id user@server                 # copy public key to server
 chmod 700 ~/.ssh && chmod 600 ~/.ssh/authorized_keys
 ```
 
-**/etc/ssh/sshd_config hardening:**
+**/etc/ssh/sshd\_config hardening:**
 
 ```
 PermitRootLogin no
@@ -278,7 +283,7 @@ MaxAuthTries 3
 ssh -L 8080:localhost:3306 user@jumphost
 ```
 
----
+***
 
 ### Q13. How does cron work? Write a cron expression for "every day at 2:30 AM".
 
@@ -302,7 +307,7 @@ grep CRON /var/log/syslog   # check execution log
 
 **Common trap:** cron runs with a minimal PATH — always use full binary paths in cron scripts.
 
----
+***
 
 ### Q14. How do you find files in Linux? Common find command patterns.
 
@@ -324,7 +329,7 @@ find /src -name "*.py" | xargs grep "TODO"
 # -newer file = modified more recently than 'file'
 ```
 
----
+***
 
 ### Q15. How do you compress and archive files in Linux?
 
@@ -349,11 +354,11 @@ gunzip file.log.gz
 tar -czf backup-$(date +%Y%m%d).tar.gz /app/data
 ```
 
----
+***
 
 ## 🔵 MID-LEVEL (Q16–Q35)
 
----
+***
 
 ### Q16. How do you troubleshoot high CPU usage on a Linux server? Walk me through step by step.
 
@@ -376,13 +381,14 @@ jstat -gcutil <PID> 1000       # GC pressure?
 ```
 
 **CPU breakdown in top:**
-- `%us` = user-space CPU
-- `%sy` = kernel/system CPU — high means kernel issue
-- `%wa` = I/O wait — high means disk bottleneck, NOT CPU
+
+* `%us` = user-space CPU
+* `%sy` = kernel/system CPU — high means kernel issue
+* `%wa` = I/O wait — high means disk bottleneck, NOT CPU
 
 **Common causes:** runaway loop, GC pressure, fork bomb, CPU-intensive cron job.
 
----
+***
 
 ### Q17. A server is out of memory but you don't want to reboot. What do you do?
 
@@ -407,7 +413,7 @@ dmesg | grep -i "out of memory"
 grep -i "oom" /var/log/syslog
 ```
 
----
+***
 
 ### Q18. Explain load average in Linux. What does "2.5 4.0 3.8" mean?
 
@@ -415,11 +421,11 @@ Load average = average number of runnable + uninterruptible (I/O waiting) proces
 
 **Interpretation depends on CPU count:**
 
-| CPU Count | Load 2.5 | Meaning |
-|-----------|----------|---------|
-| 1 core | 2.5 | Overloaded — queue building |
-| 4 cores | 2.5 | 62.5% — fine |
-| 4 cores | 5.0 | Queue building up |
+| CPU Count | Load 2.5 | Meaning                     |
+| --------- | -------- | --------------------------- |
+| 1 core    | 2.5      | Overloaded — queue building |
+| 4 cores   | 2.5      | 62.5% — fine                |
+| 4 cores   | 5.0      | Queue building up           |
 
 ```bash
 nproc                                    # check CPU count
@@ -428,11 +434,11 @@ grep -c ^processor /proc/cpuinfo
 
 **Rule:** `load average / CPU count > 1.0` means processes are waiting.
 
-**Pattern `2.5 → 4.0 → 3.8`:** spike happened ~5 minutes ago, system is now recovering.
+**Pattern `2.5 → 4.0 → 3.8`:** spike happened \~5 minutes ago, system is now recovering.
 
 **High load but low CPU%?** → likely I/O wait. Check `vmstat → wa column` or `iostat -x 1 5`.
 
----
+***
 
 ### Q19. How do you troubleshoot network connectivity between two servers?
 
@@ -460,11 +466,12 @@ ip route get <target-IP>      # which route would be used?
 ```
 
 **Diagnosis tips:**
-- `ping` works but `nc` fails → firewall blocking the port
-- `nc` works but HTTPS fails → TLS/cert issue or app not listening on TLS
-- `dig` fails → DNS resolution problem, check `/etc/resolv.conf`
 
----
+* `ping` works but `nc` fails → firewall blocking the port
+* `nc` works but HTTPS fails → TLS/cert issue or app not listening on TLS
+* `dig` fails → DNS resolution problem, check `/etc/resolv.conf`
+
+***
 
 ### Q20. Write a script to monitor a service and restart it if it goes down.
 
@@ -494,13 +501,13 @@ fi
 
 **Interview note:** "In production I'd use systemd's `Restart=on-failure` directive or Monit/supervisord — avoids cron race conditions and has built-in backoff."
 
----
+***
 
 ### Q21. Explain inodes. What happens when a filesystem runs out of inodes even though there's disk space?
 
 **Inode:** data structure storing file metadata — owner, permissions, timestamps, block pointers. NOT the filename. Each file/directory consumes exactly one inode. Inode count is fixed at filesystem creation.
 
-**Symptom:** `df -h` shows space available but creating a file fails: *"No space left on device"*
+**Symptom:** `df -h` shows space available but creating a file fails: _"No space left on device"_
 
 ```bash
 # Diagnose
@@ -519,7 +526,7 @@ find /var/cache -name "*.cache" -delete
 
 **Real scenario:** mail servers, container builds, and session stores create millions of tiny files.
 
----
+***
 
 ### Q22. How do you harden an SSH server in production?
 
@@ -556,7 +563,7 @@ systemctl restart sshd
 systemctl enable fail2ban    # ban IPs with too many failed attempts
 ```
 
----
+***
 
 ### Q23. How do you parse and process log files efficiently using bash?
 
@@ -579,32 +586,33 @@ zgrep "ERROR" /var/log/app.log.gz
 
 **Performance tip:** for huge files, `awk` in a single pass is much faster than chained grep pipes.
 
----
+***
 
 ### Q24. What are cgroups and namespaces? How do containers use them?
 
 **Namespaces — isolation:**
 
-| Namespace | What it isolates |
-|-----------|-----------------|
-| PID | Process IDs — container has its own PID 1 |
-| NET | Network stack (interfaces, routes, iptables) |
-| MNT | Filesystem mount points |
-| UTS | Hostname |
-| IPC | Inter-process communication |
-| USER | UID/GID mapping (rootless containers) |
+| Namespace | What it isolates                             |
+| --------- | -------------------------------------------- |
+| PID       | Process IDs — container has its own PID 1    |
+| NET       | Network stack (interfaces, routes, iptables) |
+| MNT       | Filesystem mount points                      |
+| UTS       | Hostname                                     |
+| IPC       | Inter-process communication                  |
+| USER      | UID/GID mapping (rootless containers)        |
 
 **cgroups — resource limits:**
-- CPU: limit % of CPU time
-- memory: hard limit, triggers OOM kill if exceeded
-- blkio: disk I/O throttling
-- pids: limit number of processes (fork bomb protection)
+
+* CPU: limit % of CPU time
+* memory: hard limit, triggers OOM kill if exceeded
+* blkio: disk I/O throttling
+* pids: limit number of processes (fork bomb protection)
 
 **Together:** namespaces provide isolation, cgroups provide resource constraints. Containers share the host kernel but are isolated via these primitives.
 
 **Implication:** container escape = namespace bypass. Running as non-root matters. OpenShift SCCs enforce this at the pod level.
 
----
+***
 
 ### Q25. Explain the difference between vmstat, iostat, and sar. When do you use each?
 
@@ -626,15 +634,17 @@ sar -f /var/log/sa/sa15   # historical data from 15th of month
 ```
 
 **Decision tree:**
-- High load + high `wa%` → `iostat` (disk bottleneck)
-- High load + low `wa%` → `vmstat` → CPU or memory issue
-- Need historical trend → `sar`
 
----
+* High load + high `wa%` → `iostat` (disk bottleneck)
+* High load + low `wa%` → `vmstat` → CPU or memory issue
+* Need historical trend → `sar`
+
+***
 
 ### Q26. What is LVM and how would you extend a logical volume online?
 
 **LVM layers:**
+
 ```
 PV (Physical Volume) → real disks/partitions
 VG (Volume Group)    → pool of PVs
@@ -669,7 +679,7 @@ df -h
 lvcreate -L 5G -s -n snap /dev/vg/lv   # point-in-time backup without app downtime
 ```
 
----
+***
 
 ### Q27. Explain iptables — how do you allow a port, block an IP, and view current rules?
 
@@ -702,7 +712,7 @@ iptables-save > /etc/iptables/rules.v4
 
 **Note:** modern systems use `nftables`. `firewalld` (RHEL) and `ufw` (Ubuntu) are higher-level wrappers.
 
----
+***
 
 ### Q28. How do you handle errors in bash scripts? What is set -e, set -u, set -o pipefail?
 
@@ -738,16 +748,17 @@ if ! command; then
 fi
 ```
 
----
+***
 
 ### Q29. Explain SELinux/AppArmor — what are they and how do you troubleshoot a policy denial?
 
 **SELinux (RHEL/CentOS):** Mandatory Access Control. Labels every process and file with a security context. Policy defines what label X can do to label Y.
 
 **Modes:**
-- `enforcing` — policy enforced, violations blocked + logged
-- `permissive` — violations logged but NOT blocked (use for testing)
-- `disabled` — completely off
+
+* `enforcing` — policy enforced, violations blocked + logged
+* `permissive` — violations logged but NOT blocked (use for testing)
+* `disabled` — completely off
 
 ```bash
 getenforce                              # check current mode
@@ -773,7 +784,7 @@ aa-status                       # active profiles
 aa-complain /path/to/binary    # permissive mode for one app
 ```
 
----
+***
 
 ### Q30. Walk me through the Linux boot process from power-on to login prompt.
 
@@ -797,7 +808,7 @@ journalctl -b -1 -k         # kernel messages from previous boot
 
 **DevOps relevance:** EC2/cloud instances run `cloud-init` at boot for userdata. Understanding boot sequence helps debug cloud-init failures in AMIs/launch templates.
 
----
+***
 
 ### Q31. How do you find and fix a memory leak in a running Linux process?
 
@@ -829,7 +840,7 @@ resources:
 
 **Root cause:** add heap dump on OOM for JVM: `-XX:+HeapDumpOnOutOfMemoryError`
 
----
+***
 
 ### Q32. What is a VLAN, and how does Linux handle network bonding/teaming?
 
@@ -844,11 +855,11 @@ ip link set eth0.100 up
 
 **Bonding modes:**
 
-| Mode | Name | Use case |
-|------|------|----------|
-| 0 | round-robin | load balance |
-| 1 | active-backup | HA failover |
-| 4 | 802.3ad LACP | active/active throughput + HA |
+| Mode | Name          | Use case                      |
+| ---- | ------------- | ----------------------------- |
+| 0    | round-robin   | load balance                  |
+| 1    | active-backup | HA failover                   |
+| 4    | 802.3ad LACP  | active/active throughput + HA |
 
 ```bash
 ip link add bond0 type bond
@@ -857,7 +868,7 @@ ip link set eth0 master bond0
 ip link set eth1 master bond0
 ```
 
----
+***
 
 ### Q33. How do you check and repair filesystem errors in Linux?
 
@@ -886,7 +897,7 @@ smartctl -a /dev/sda
 smartctl -t short /dev/sda
 ```
 
----
+***
 
 ### Q34. How do you do string manipulation in bash? Common patterns.
 
@@ -924,7 +935,7 @@ VERSION=${TAG#v}                 # 1.2.3-rc1
 MAJOR=${VERSION%%.*}             # 1
 ```
 
----
+***
 
 ### Q35. Explain DNS resolution — what happens when you type "curl google.com"?
 
@@ -945,11 +956,11 @@ getent hosts google.com         # respects /etc/hosts too
 
 **Container DNS:** In Kubernetes, each pod's `/etc/resolv.conf` points to CoreDNS. Service discovery: `<service>.<namespace>.svc.cluster.local`
 
----
+***
 
 ## 🔴 HARD / SCENARIO (Q36–Q50)
 
----
+***
 
 ### Q36. A production server is responding slowly. Users report timeouts. You have SSH access. What is your exact diagnostic process?
 
@@ -990,7 +1001,7 @@ journalctl -u app -n 100 --no-pager
 
 **Communication:** update stakeholders every 5–10 minutes while investigating.
 
----
+***
 
 ### Q37. You accidentally deleted /etc/passwd. How do you recover?
 
@@ -1013,7 +1024,7 @@ ansible-playbook site.yml --tags users
 
 **Prevention:** `chattr +i /etc/passwd` (make immutable). Regular snapshots. Manage users via Ansible/Puppet.
 
----
+***
 
 ### Q38. chmod 000 /bin/bash was run on a server. How do you fix it without rebooting?
 
@@ -1038,7 +1049,7 @@ scp user@goodserver:/bin/bash /bin/bash
 
 **Why this works:** permissions are checked at `exec()` time. Running bash processes already loaded into memory are unaffected.
 
----
+***
 
 ### Q39. Explain the Linux kernel's OOM killer — how does it choose which process to kill?
 
@@ -1047,10 +1058,11 @@ The OOM killer triggers when the kernel cannot allocate memory and swap is exhau
 **Selection:** each process gets an `oom_score` (0–1000). Higher = more likely to be killed.
 
 **Factors:**
-- Memory consumption (RSS) — biggest contributor
-- Duration (long-running processes score lower — protecting systemd)
-- Number of children
-- Process priority (nice value)
+
+* Memory consumption (RSS) — biggest contributor
+* Duration (long-running processes score lower — protecting systemd)
+* Number of children
+* Process priority (nice value)
 
 ```bash
 # Check scores
@@ -1070,11 +1082,12 @@ journalctl -k | grep -i "out of memory"
 
 **Kubernetes:** OOM kill → pod restarts → `CrashLoopBackOff`. Fix: set proper `resources.limits.memory` so the right pod is killed and not a neighbour.
 
----
+***
 
-### Q40. How does a TCP connection get established and torn down? What is TIME_WAIT and why does it matter?
+### Q40. How does a TCP connection get established and torn down? What is TIME\_WAIT and why does it matter?
 
 **3-way handshake (establish):**
+
 ```
 Client → SYN → Server
 Client ← SYN-ACK ← Server
@@ -1082,6 +1095,7 @@ Client → ACK → Server   → ESTABLISHED
 ```
 
 **4-way teardown:**
+
 ```
 Initiator → FIN → Peer
 Initiator ← ACK ← Peer
@@ -1089,9 +1103,9 @@ Initiator ← FIN ← Peer
 Initiator → ACK → Peer  → TIME_WAIT on initiator
 ```
 
-**TIME_WAIT:** socket stays in this state for 2×MSL (~60–120 seconds) to ensure delayed packets from the old connection don't confuse a new connection on the same port.
+**TIME\_WAIT:** socket stays in this state for 2×MSL (\~60–120 seconds) to ensure delayed packets from the old connection don't confuse a new connection on the same port.
 
-**Problem at scale:** a busy load balancer initiating thousands of short connections can exhaust ephemeral ports while sockets are in TIME_WAIT.
+**Problem at scale:** a busy load balancer initiating thousands of short connections can exhaust ephemeral ports while sockets are in TIME\_WAIT.
 
 ```bash
 ss -s | grep TIME-WAIT
@@ -1103,7 +1117,7 @@ sysctl net.ipv4.tcp_fin_timeout=15
 sysctl net.ipv4.ip_local_port_range="10000 65535"
 ```
 
----
+***
 
 ### Q41. You have a 50GB log file. How do you efficiently search and extract data without loading it all into memory?
 
@@ -1138,7 +1152,7 @@ split -l 1000000 app.log chunk_
 
 **Real answer:** "For repeated analysis at this scale, I'd push it to Elasticsearch or use Splunk's indexer — which is what we use at ANZ for production log analysis."
 
----
+***
 
 ### Q42. How do you audit and investigate a potentially compromised Linux server?
 
@@ -1175,12 +1189,11 @@ chkrootkit
 rkhunter --check
 ```
 
----
+***
 
 ### Q43. Explain the difference between swap space and RAM. When does swapping become a problem?
 
-**RAM:** fast, volatile. Active data and code live here.
-**Swap:** disk-backed extension of memory. 100x–1000x slower even on SSD.
+**RAM:** fast, volatile. Active data and code live here. **Swap:** disk-backed extension of memory. 100x–1000x slower even on SSD.
 
 ```bash
 # Control swappiness
@@ -1198,13 +1211,14 @@ swapon -s                    # swap devices and usage
 ```
 
 **When it's a problem:**
-- Active swapping (`si`/`so` > 0) = severe performance degradation
-- DB process getting swapped = catastrophic latency
-- JVM: GC pause + swap pages = long stop-the-world pause
+
+* Active swapping (`si`/`so` > 0) = severe performance degradation
+* DB process getting swapped = catastrophic latency
+* JVM: GC pause + swap pages = long stop-the-world pause
 
 **Containers:** Kubernetes containers have no swap access by default when `memory-swap` equals `memory`. Always size memory limits correctly.
 
----
+***
 
 ### Q44. How do you use tcpdump to capture and analyse network traffic?
 
@@ -1234,7 +1248,7 @@ tcpdump -i eth0 -w /tmp/cap.pcap -s 0 -c 10000
 scp /tmp/cap.pcap analyst@jump:/tmp/
 ```
 
----
+***
 
 ### Q45. Write a script to rotate logs — keep last 7 days, compress files older than 1 day.
 
@@ -1265,7 +1279,7 @@ echo "$(date '+%Y-%m-%d %H:%M:%S') rotation done. $remaining files remain." >> "
 
 **Interview note:** "In production I'd use the built-in `logrotate` with `/etc/logrotate.d/` configs — it handles `copytruncate` for apps that can't reopen logs and is battle-tested."
 
----
+***
 
 ### Q46. What is a kernel panic? How do you diagnose and prevent it in production?
 
@@ -1296,7 +1310,7 @@ smartctl -a /dev/sda
 mcelog               # CPU/memory hardware error log
 ```
 
----
+***
 
 ### Q47. Explain network namespaces and how Docker uses them for container networking.
 
@@ -1311,8 +1325,8 @@ ip netns exec myns bash
 
 1. Docker creates `docker0` bridge on host
 2. Creates a `veth` pair (virtual ethernet cable):
-   - `veth0` → in host namespace, attached to `docker0` bridge
-   - `veth1` → in container's NET namespace (appears as `eth0`)
+   * `veth0` → in host namespace, attached to `docker0` bridge
+   * `veth1` → in container's NET namespace (appears as `eth0`)
 3. Container gets IP from `docker0` subnet (`172.17.0.0/16` default)
 4. NAT (`iptables MASQUERADE`) translates outbound traffic to host IP
 
@@ -1328,7 +1342,7 @@ iptables -A PREROUTING -p tcp --dport 8080 -j DNAT --to 172.17.0.2:80
 nsenter -t <PID> -n ip addr    # enter container's network namespace from host
 ```
 
----
+***
 
 ### Q48. Your application has intermittent latency spikes. The system looks healthy. How do you find the cause?
 
@@ -1360,7 +1374,7 @@ perf script | flamegraph.pl > flame.svg
 
 **Real answer:** "I'd first add p99 latency tracking at the application level, then correlate with system metrics. At ANZ, we use Dynatrace's distributed traces to pinpoint which microservice or DB call is causing spikes."
 
----
+***
 
 ### Q49. How do you write a production-grade bash function library?
 
@@ -1407,7 +1421,7 @@ require_cmds() {
 # retry 3 5 kubectl apply -f manifest.yaml
 ```
 
----
+***
 
 ### Q50. Explain how you would set up zero-downtime deployment using only Linux tools (no Kubernetes).
 
@@ -1463,23 +1477,23 @@ echo "Deployment complete."
 
 **Rollback:** reverse the process with the old binary. For instant rollback, use blue/green: two full app sets, flip the LB all at once.
 
----
+***
 
 ## 📌 Quick Reference — Commands to Know Cold
 
-| Category | Commands |
-|----------|----------|
-| CPU | `top`, `htop`, `ps aux`, `pidstat`, `mpstat`, `perf top` |
-| Memory | `free`, `vmstat`, `smem`, `cat /proc/meminfo` |
-| Disk | `df -h`, `du -sh`, `iostat -x`, `lsof`, `find` |
-| Network | `ss -tulnp`, `ip addr`, `ip route`, `tcpdump`, `nc`, `dig`, `mtr` |
-| Process | `kill`, `strace`, `lsof -p`, `cat /proc/<PID>/` |
-| Services | `systemctl`, `journalctl` |
-| Files | `grep`, `awk`, `sed`, `find`, `tar`, `rsync` |
-| Security | `iptables`, `ausearch`, `chcon`, `fail2ban` |
-| Storage | `fdisk`, `lvcreate`, `lvextend`, `fsck`, `smartctl` |
-| Scripting | `set -euo pipefail`, `trap`, `${VAR##*/}`, `getopts` |
+| Category  | Commands                                                          |
+| --------- | ----------------------------------------------------------------- |
+| CPU       | `top`, `htop`, `ps aux`, `pidstat`, `mpstat`, `perf top`          |
+| Memory    | `free`, `vmstat`, `smem`, `cat /proc/meminfo`                     |
+| Disk      | `df -h`, `du -sh`, `iostat -x`, `lsof`, `find`                    |
+| Network   | `ss -tulnp`, `ip addr`, `ip route`, `tcpdump`, `nc`, `dig`, `mtr` |
+| Process   | `kill`, `strace`, `lsof -p`, `cat /proc/<PID>/`                   |
+| Services  | `systemctl`, `journalctl`                                         |
+| Files     | `grep`, `awk`, `sed`, `find`, `tar`, `rsync`                      |
+| Security  | `iptables`, `ausearch`, `chcon`, `fail2ban`                       |
+| Storage   | `fdisk`, `lvcreate`, `lvextend`, `fsck`, `smartctl`               |
+| Scripting | `set -euo pipefail`, `trap`, `${VAR##*/}`, `getopts`              |
 
----
+***
 
-*Next topic: CI/CD & Git — 50 questions*
+_Next topic: CI/CD & Git — 50 questions_
