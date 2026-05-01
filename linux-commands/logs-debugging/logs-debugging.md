@@ -2,9 +2,9 @@
 
 Commands to read system logs, service logs, and historical performance data.
 
----
+***
 
-## 16. `dmesg`
+## `dmesg`
 
 ```bash
 dmesg                                    # kernel ring buffer output
@@ -16,9 +16,9 @@ dmesg -T | grep -iE "oom|kill|fail"      # OOM kills and failures
 
 First place to check after a crash, kernel panic, or OOM kill event. Hardware errors, driver issues, and kernel-level events all appear here.
 
----
+***
 
-## 17. `journalctl`
+## `journalctl`
 
 ```bash
 journalctl -u nginx                       # logs for a specific service
@@ -26,15 +26,13 @@ journalctl -u nginx -f                    # follow live (like tail -f)
 journalctl -u nginx -n 100               # last 100 lines
 journalctl -u nginx --since "1 hour ago"
 journalctl -u myapp | grep -i failed     # filter failures
-journalctl -p err -b                      # errors from current boot
-journalctl -b -1 -k                       # kernel messages from previous boot
 ```
 
 Master log for every systemd service. Use this when you need app-level log detail that `dmesg` doesn't show.
 
----
+***
 
-## 18. `sar`
+## `sar`
 
 ```bash
 sar -u 1 3          # CPU utilization
@@ -48,9 +46,9 @@ sar -f /var/log/sa/sa15   # historical data from the 15th of the month
 
 **Format:** `sar -u 1 3` → report every 1 second, 3 times.
 
----
+***
 
-## 19. `systemctl`
+## `systemctl`
 
 ```bash
 systemctl status nginx
@@ -65,9 +63,9 @@ systemctl --failed            # list all failed services
 
 **`reload` vs `restart`:**
 
-| Command | Behaviour | Downtime |
-|---------|-----------|----------|
-| `reload` | Sends SIGHUP, app re-reads config | No |
-| `restart` | Full stop + start | Brief |
+| Command   | Behaviour                         | Downtime |
+| --------- | --------------------------------- | -------- |
+| `reload`  | Sends SIGHUP, app re-reads config | No       |
+| `restart` | Full stop + start                 | Brief    |
 
 Use `reload` for nginx config changes. Use `restart` when the binary itself changes.
