@@ -17,7 +17,7 @@ ping google.com
 ## `ss`
 
 `ss` = **socket statistics**\
-👉 It shows **network connections, listening ports, and socket info**
+It shows **network connections, listening ports, and socket info**
 
 It’s the **modern replacement for `netstat`** (faster and more detailed).
 
@@ -61,17 +61,6 @@ It’s used to **download files from the internet** (HTTP, HTTPS, FTP)
 
 ```bash
 wget https://example.com/file.zip
-```
-
-***
-
-## `mtr`
-
-Shows every network hop between you and the destination with live packet loss %. Pinpoints exactly where in the path traffic is dropping.
-
-```bash
-mtr google.com                          # live traceroute
-mtr --report -c 10 google.com          # 10 pings per hop, generate report
 ```
 
 ***

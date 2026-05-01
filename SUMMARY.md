@@ -8,15 +8,17 @@
 
 ## Linux Commands
 
-* [Navigation](linux-commands/navigation/navigation.md)
+* [File & Directory](linux-commands/navigation/navigation.md)
+* [File Operations](linux-commands/file-operations.md)
 * [File Editing](linux-commands/file-editing/file-editing.md)
-* [Disk Storage](linux-commands/disk-storage/disk-storage.md)
+* [File Permissions](linux-commands/file-permissions.md)
+* [User Management](linux-commands/users-security/users-security.md)
 * [File Archive](linux-commands/file-archive/file-archive.md)
+* [Process Management](linux-commands/process-management/process-management.md)
+* [Disk Storage](linux-commands/disk-storage/disk-storage.md)
 * [Logs & Debugging](linux-commands/logs-debugging/logs-debugging.md)
 * [Networking](linux-commands/networking/networking.md)
-* [Process Management](linux-commands/process-management/process-management.md)
-* [Quick Troubleshooting](linux-commands/quick-troubleshooting/quick-troubleshooting.md)
 * [Scheduler & Misc](linux-commands/scheduler-misc/scheduler-misc.md)
 * [System Health](linux-commands/system-health/system-health.md)
 * [Text Processing](linux-commands/text-processing/text-processing.md)
-* [Users & Security](linux-commands/users-security/users-security.md)
+* [Quick Troubleshooting](linux-commands/quick-troubleshooting/quick-troubleshooting.md)

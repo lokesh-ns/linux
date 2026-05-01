@@ -2,9 +2,9 @@
 
 Commands to search, filter, transform, and extract data from files and command output.
 
----
+***
 
-## 20. `grep`
+## `grep`
 
 ```bash
 grep "error" app.log
@@ -18,9 +18,9 @@ grep -A 3 -B 2 "exception" app.log   # 3 lines after, 2 lines before
 grep -iE "oom|kill|fail" /var/log/syslog
 ```
 
----
+***
 
-## 21. `awk`
+## `awk`
 
 Field/column processor — powerful for structured log data.
 
@@ -39,9 +39,9 @@ awk '{sum+=$2} END {print sum}' file  # aggregate / sum a column
 awk '{print $NF}' app.log | sort | uniq -c | sort -rn | head -10
 ```
 
----
+***
 
-## 22. `sed`
+## `sed`
 
 Stream editor — find/replace and line operations.
 
@@ -56,9 +56,9 @@ sed -i 's/LOG_LEVEL=debug/LOG_LEVEL=info/g' app.env  # change log level
 
 **Use in CI/CD:** patch config files in pipelines without opening an editor. Powerful for bulk replacements.
 
----
+***
 
-## 23. `find`
+## `find`
 
 ```bash
 find . -type f -name "*.log"                       # by name
@@ -69,9 +69,9 @@ find / -type f -size +50M                          # files larger than 50MB
 find /app -name "*.conf" -exec grep -l "password" {} \;  # search inside files
 ```
 
----
+***
 
-## 24. `xargs`
+## `xargs`
 
 Passes output of one command as arguments to another.
 
@@ -88,7 +88,7 @@ find . -name "*.log" | xargs grep -i "exception"
 
 **Why xargs?** `find` gives filenames. `xargs` feeds them to the next command. More efficient than `-exec` for large numbers of files.
 
----
+***
 
 ## Pipe Chaining — The Linux Superpower
 

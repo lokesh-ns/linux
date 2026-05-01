@@ -26,52 +26,6 @@ vim +/error file.txt # open and jump to first match of "error"
 
 ***
 
-### Essential vim Commands
-
-**Entering Insert Mode:**
-
-| Key | Behaviour                 |
-| --- | ------------------------- |
-| `i` | Insert before cursor      |
-| `a` | Insert after cursor       |
-| `o` | New line below and insert |
-| `O` | New line above and insert |
-
-**Saving and Quitting (from Normal mode, press `:` first):**
-
-| Command       | Action                                |
-| ------------- | ------------------------------------- |
-| `:w`          | Save (write)                          |
-| `:q`          | Quit                                  |
-| `:wq` or `:x` | Save and quit                         |
-| `:q!`         | Quit without saving (force)           |
-| `:wq!`        | Save and quit (force, even read-only) |
-
-**Navigation:**
-
-| Key      | Action                 |
-| -------- | ---------------------- |
-| `gg`     | Jump to top of file    |
-| `G`      | Jump to bottom of file |
-| `50G`    | Jump to line 50        |
-| `Ctrl+f` | Page down              |
-| `Ctrl+b` | Page up                |
-| `0`      | Start of line          |
-| `$`      | End of line            |
-
-**Editing in Normal Mode:**
-
-| Key      | Action                        |
-| -------- | ----------------------------- |
-| `dd`     | Delete (cut) current line     |
-| `yy`     | Yank (copy) current line      |
-| `p`      | Paste after cursor            |
-| `u`      | Undo                          |
-| `Ctrl+r` | Redo                          |
-| `x`      | Delete character under cursor |
-| `dw`     | Delete word                   |
-| `5dd`    | Delete 5 lines                |
-
 **Search and Replace:**
 
 ```bash
@@ -89,7 +43,7 @@ N                 # previous match
 
 ***
 
-## 2. `nano`
+## `nano`
 
 Simpler than vim — menu shortcuts shown at the bottom of the screen. Good for quick edits.
 
@@ -123,7 +77,7 @@ nano /etc/hosts        # edit hosts file
 
 ***
 
-## 3. Editing Files Without an Editor
+## Editing Files Without an Editor
 
 For scripts and CI/CD pipelines where you can't open an interactive editor:
 
@@ -153,18 +107,6 @@ sed -i 's/PasswordAuthentication yes/PasswordAuthentication no/' /etc/ssh/sshd_c
 | `>>`     | Append — adds to end of file      |
 
 > ⚠️ `>` on a file that already exists will silently wipe its content. Use `>>` unless you intend to overwrite.
-
-***
-
-## 4. `touch` for File Creation
-
-```bash
-touch newfile.txt               # create empty file
-touch file1.txt file2.txt       # create multiple files
-touch -t 202501010000 file.txt  # set a specific timestamp
-```
-
-Used in scripts to create placeholder files, trigger file-watcher pipelines, or reset modification timestamps.
 
 ***
 

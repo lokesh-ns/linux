@@ -2,9 +2,9 @@
 
 Commands to find, monitor, prioritise, and kill processes.
 
----
+***
 
-## 11. `ps`
+## `ps`
 
 ```bash
 ps -ef                            # all processes, full format
@@ -16,16 +16,16 @@ ps -ef | grep nginx               # find a specific process
 
 **Key columns:**
 
-| Column | Meaning |
-|--------|---------|
-| `PID` | Process ID |
-| `PPID` | Parent Process ID |
-| `%CPU` / `%MEM` | Resource usage |
-| `COMMAND` | Full command string |
+| Column          | Meaning             |
+| --------------- | ------------------- |
+| `PID`           | Process ID          |
+| `PPID`          | Parent Process ID   |
+| `%CPU` / `%MEM` | Resource usage      |
+| `COMMAND`       | Full command string |
 
----
+***
 
-## 12. `kill`
+## `kill`
 
 ```bash
 kill -15 <PID>      # SIGTERM — graceful shutdown, try first
@@ -39,18 +39,18 @@ pgrep nginx
 
 **Signal reference:**
 
-| Signal | Number | Behaviour |
-|--------|--------|-----------|
-| SIGTERM | 15 | Graceful — app can catch and clean up |
-| SIGKILL | 9 | Force — cannot be caught or ignored |
-| SIGHUP | 1 | Reload config without restart |
-| SIGINT | 2 | Ctrl+C |
+| Signal  | Number | Behaviour                             |
+| ------- | ------ | ------------------------------------- |
+| SIGTERM | 15     | Graceful — app can catch and clean up |
+| SIGKILL | 9      | Force — cannot be caught or ignored   |
+| SIGHUP  | 1      | Reload config without restart         |
+| SIGINT  | 2      | Ctrl+C                                |
 
 > ⚠️ Always try SIGTERM (15) before SIGKILL (9). SIGKILL gives the process no chance to clean up open files or connections.
 
----
+***
 
-## 13. `pkill`
+## `pkill`
 
 ```bash
 pkill nginx           # kill by process name
@@ -60,9 +60,9 @@ pkill -u www-data     # kill all processes of a user
 
 Use when you know the name but not the PID.
 
----
+***
 
-## 14. `nice` / `renice`
+## `nice` / `renice`
 
 ```bash
 nice -n 10 ./script.sh          # start with lower priority (10)
@@ -74,9 +74,9 @@ renice -n 5 -p <PID>            # change priority of a running process
 
 **Use:** when a server is resource-starved, ensure critical processes (DB, API gateway) get CPU time first.
 
----
+***
 
-## 15. `strace`
+## `strace`
 
 ```bash
 strace -p <PID>                            # attach to running process
