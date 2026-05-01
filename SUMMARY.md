@@ -8,6 +8,8 @@
 
 ## Linux Commands
 
+* [Networking](linux-commands/networking/networking.md)
+* [File Editing](linux-commands/file-editing/file-editing.md)
 * [Disk Storage](linux-commands/disk-storage/disk-storage.md)
 * [File Archive](linux-commands/file-archive/file-archive.md)
 * [Logs & Debugging](linux-commands/logs-debugging/logs-debugging.md)
