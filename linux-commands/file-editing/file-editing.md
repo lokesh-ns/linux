@@ -2,9 +2,9 @@
 
 Commands to create, view, and edit files directly on the server — essential for config changes, debugging, and on-the-fly fixes without a GUI.
 
----
+***
 
-## 1. `vi` / `vim`
+## `vi` / `vim`
 
 The standard editor on every Linux server. Always available — even on minimal installs where `nano` may not be.
 
@@ -17,60 +17,60 @@ vim +/error file.txt # open and jump to first match of "error"
 
 **vim has two primary modes:**
 
-| Mode | How to Enter | Purpose |
-|---|---|---|
-| Normal | Default / press `Esc` | Navigate, delete, copy, paste |
-| Insert | Press `i`, `a`, or `o` | Type and edit text |
-| Visual | Press `v` | Select text |
-| Command | Press `:` | Save, quit, search, replace |
+| Mode    | How to Enter           | Purpose                       |
+| ------- | ---------------------- | ----------------------------- |
+| Normal  | Default / press `Esc`  | Navigate, delete, copy, paste |
+| Insert  | Press `i`, `a`, or `o` | Type and edit text            |
+| Visual  | Press `v`              | Select text                   |
+| Command | Press `:`              | Save, quit, search, replace   |
 
----
+***
 
 ### Essential vim Commands
 
 **Entering Insert Mode:**
 
-| Key | Behaviour |
-|---|---|
-| `i` | Insert before cursor |
-| `a` | Insert after cursor |
+| Key | Behaviour                 |
+| --- | ------------------------- |
+| `i` | Insert before cursor      |
+| `a` | Insert after cursor       |
 | `o` | New line below and insert |
 | `O` | New line above and insert |
 
 **Saving and Quitting (from Normal mode, press `:` first):**
 
-| Command | Action |
-|---|---|
-| `:w` | Save (write) |
-| `:q` | Quit |
-| `:wq` or `:x` | Save and quit |
-| `:q!` | Quit without saving (force) |
-| `:wq!` | Save and quit (force, even read-only) |
+| Command       | Action                                |
+| ------------- | ------------------------------------- |
+| `:w`          | Save (write)                          |
+| `:q`          | Quit                                  |
+| `:wq` or `:x` | Save and quit                         |
+| `:q!`         | Quit without saving (force)           |
+| `:wq!`        | Save and quit (force, even read-only) |
 
 **Navigation:**
 
-| Key | Action |
-|---|---|
-| `gg` | Jump to top of file |
-| `G` | Jump to bottom of file |
-| `50G` | Jump to line 50 |
-| `Ctrl+f` | Page down |
-| `Ctrl+b` | Page up |
-| `0` | Start of line |
-| `$` | End of line |
+| Key      | Action                 |
+| -------- | ---------------------- |
+| `gg`     | Jump to top of file    |
+| `G`      | Jump to bottom of file |
+| `50G`    | Jump to line 50        |
+| `Ctrl+f` | Page down              |
+| `Ctrl+b` | Page up                |
+| `0`      | Start of line          |
+| `$`      | End of line            |
 
 **Editing in Normal Mode:**
 
-| Key | Action |
-|---|---|
-| `dd` | Delete (cut) current line |
-| `yy` | Yank (copy) current line |
-| `p` | Paste after cursor |
-| `u` | Undo |
-| `Ctrl+r` | Redo |
-| `x` | Delete character under cursor |
-| `dw` | Delete word |
-| `5dd` | Delete 5 lines |
+| Key      | Action                        |
+| -------- | ----------------------------- |
+| `dd`     | Delete (cut) current line     |
+| `yy`     | Yank (copy) current line      |
+| `p`      | Paste after cursor            |
+| `u`      | Undo                          |
+| `Ctrl+r` | Redo                          |
+| `x`      | Delete character under cursor |
+| `dw`     | Delete word                   |
+| `5dd`    | Delete 5 lines                |
 
 **Search and Replace:**
 
@@ -83,9 +83,11 @@ N                 # previous match
 :10,20s/old/new/g # replace only in lines 10–20
 ```
 
-**Interview tip:** The most common vim scenario in interviews — "you SSH into a server and need to change a config value. How?" Answer: `vim /etc/nginx/nginx.conf`, navigate with `/keyword`, press `i` to edit, `Esc` then `:wq` to save.
+**Interview tip:** The most common vim scenario in interviews&#x20;
 
----
+"you SSH into a server and need to change a config value. How?" Answer: `vim /etc/nginx/nginx.conf`, navigate with `/keyword`, press `i` to edit, `Esc` then `:wq` to save.
+
+***
 
 ## 2. `nano`
 
@@ -99,27 +101,27 @@ nano /etc/hosts        # edit hosts file
 
 **nano shortcuts (shown at bottom of screen as `^` = Ctrl):**
 
-| Shortcut | Action |
-|---|---|
+| Shortcut | Action           |
+| -------- | ---------------- |
 | `Ctrl+O` | Save (Write Out) |
-| `Ctrl+X` | Exit |
-| `Ctrl+W` | Search |
-| `Ctrl+K` | Cut line |
-| `Ctrl+U` | Paste line |
-| `Ctrl+G` | Help |
+| `Ctrl+X` | Exit             |
+| `Ctrl+W` | Search           |
+| `Ctrl+K` | Cut line         |
+| `Ctrl+U` | Paste line       |
+| `Ctrl+G` | Help             |
 
 **vim vs nano:**
 
-| | vim | nano |
-|---|---|---|
-| Available everywhere | ✅ Yes | ❌ Not always |
-| Learning curve | Steep | Low |
-| Best for | Config editing, scripting | Quick small edits |
-| DevOps interviews | Asked frequently | Rarely asked |
+|                      | vim                       | nano              |
+| -------------------- | ------------------------- | ----------------- |
+| Available everywhere | ✅ Yes                     | ❌ Not always      |
+| Learning curve       | Steep                     | Low               |
+| Best for             | Config editing, scripting | Quick small edits |
+| DevOps interviews    | Asked frequently          | Rarely asked      |
 
 > For interviews and real production work, know vim. Use nano when you just need to quickly change one line and don't want to think about modes.
 
----
+***
 
 ## 3. Editing Files Without an Editor
 
@@ -145,14 +147,14 @@ sed -i 's/PasswordAuthentication yes/PasswordAuthentication no/' /etc/ssh/sshd_c
 
 **`>>` vs `>`:**
 
-| Operator | Behaviour |
-|---|---|
-| `>` | Overwrite — replaces file content |
-| `>>` | Append — adds to end of file |
+| Operator | Behaviour                         |
+| -------- | --------------------------------- |
+| `>`      | Overwrite — replaces file content |
+| `>>`     | Append — adds to end of file      |
 
 > ⚠️ `>` on a file that already exists will silently wipe its content. Use `>>` unless you intend to overwrite.
 
----
+***
 
 ## 4. `touch` for File Creation
 
@@ -164,7 +166,7 @@ touch -t 202501010000 file.txt  # set a specific timestamp
 
 Used in scripts to create placeholder files, trigger file-watcher pipelines, or reset modification timestamps.
 
----
+***
 
 ## Quick Reference — File Editing Cheat Sheet
 
@@ -189,9 +191,11 @@ cat -n /etc/nginx/nginx.conf | grep -n "server_name"
 ```
 
 **Interview tip:** When asked about editing files on a production server — always mention checking if there's a backup first:
+
 ```bash
 cp /etc/nginx/nginx.conf /etc/nginx/nginx.conf.bak
 vim /etc/nginx/nginx.conf
 nginx -t && systemctl reload nginx
 ```
+
 Test the config (`nginx -t`) before reloading — never blind-reload on production.
