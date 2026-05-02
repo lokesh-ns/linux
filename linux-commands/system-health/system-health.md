@@ -6,6 +6,10 @@ Commands to check the overall health of a Linux server — the first things you 
 
 ## `uptime`
 
+* ⏱️ How long the system has been running
+* 👥 Number of logged-in users
+* 📊 System load (CPU usage trend)
+
 ```bash
 uptime
 # 10:32:01 up 10 days, 2:15,  1 user,  load average: 0.52, 0.45, 0.40
@@ -27,14 +31,45 @@ nproc                             # check CPU core count
 
 **Interview tip:** uptime also tells you if security patches have been applied — a server up for 1 year likely has unpatched vulnerabilities.
 
+### 🧠 What the statement means
+
+If you run:
+
+```
+uptime
+```
+
+and see:
+
+```
+up 365 days
+```
+
+👉 It suggests:
+
+* The system hasn’t been **rebooted for a year**
+
+***
+
+### 🔐 Why people say this
+
+Many **security patches (especially kernel updates)** require:
+
+* A **reboot** to take effect
+
+👉 So:
+
+* Long uptime = possible **missed kernel patches**
+
 ***
 
 ## `free`
 
+`free` shows **memory (RAM) usage** in your system.
+
 ```bash
 free -h       # human readable (GiB)
 free -m       # in MB
-man free      # all options
 ```
 
 **Output columns:**
@@ -55,6 +90,15 @@ man free      # all options
 ***
 
 ## `top`
+
+`top` is a **real-time system monitoring tool**.
+
+👉 It shows:
+
+* CPU usage
+* Memory usage
+* Running processes
+* System load
 
 ```bash
 top -c          # show full command path
@@ -83,26 +127,27 @@ top -c          # show full command path
 
 ## `htop`
 
+Same as `top` but color-coded and mouse-clickable. More readable for interactive troubleshooting.
+
 ```bash
 htop
 ```
 
-Same as `top` but color-coded and mouse-clickable. More readable for interactive troubleshooting.
-
-**Shortcuts:**
-
-| Key       | Action                               |
-| --------- | ------------------------------------ |
-| `Shift+P` | Sort by CPU                          |
-| `Shift+M` | Sort by memory                       |
-| `F5`      | Tree view (parent → child processes) |
-| `Q`       | Quit                                 |
-
-***
-
 ## `vmstat`
 
+`vmstat` = **Virtual Memory Statistics**
+
+It gives a **quick snapshot of system performance**:
+
+* CPU
+* Memory
+* Swap
+* I/O
+
+**lightweight monitoring tool** (faster than `top`).
+
 ```bash
+vmstat 1        # report every 1 second
 vmstat 1 5      # report every 1 second, 5 times
 ```
 
